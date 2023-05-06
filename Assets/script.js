@@ -1,24 +1,15 @@
+//_________________________________Global-Variables_______________________________________________
 const buttonEl = document.querySelector(".btn");
 
-//get local storage data on page load and push it to search-history div
-let searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
-if (searchHistory) {
-    for (let i = 0; i < searchHistory.length; i++) {
-        const searchHistoryEl = document.querySelector(".search-history");
-        const searchHistoryBtn = document.createElement("button");
-        searchHistoryBtn.textContent = searchHistory[i];
-        searchHistoryBtn.classList.add("btn", "btn-secondary", "btn-block");
-        searchHistoryEl.appendChild(searchHistoryBtn);
-    }
-}
-
-//Add event listener to button
+//________________________________Event-Listener__________________________________________________
 // This function will hold the fetch requests for the weather data for current and future days.
 buttonEl.addEventListener("click", function (event) {
     event.preventDefault();
-
+//_________________________________Search-Results_________________________________________________
     const inputEl = document.querySelector(".form-control");
     const inputValue = inputEl.value.trim();
+
+//_________________________________Current-Weather________________________________________________
 
     let apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + inputValue + "&appid=bea3f88e1674867f9dbf620b29744907";
     fetch(apiURL).then(function (response) {
@@ -40,17 +31,18 @@ buttonEl.addEventListener("click", function (event) {
                             let currentWind = data.wind.speed;
                             //add data to current weather div
                             const currentTempEl = document.querySelector(".current-temp");
-                            currentTempEl.textContent += ": " + currentTemp;
+                            currentTempEl.textContent = ": " + currentTemp;
                             const currentHumidityEl = document.querySelector(".current-humidity");
-                            currentHumidityEl.textContent += ": " + currentHumidity + "%";
+                            currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
                             const currentWindEl = document.querySelector(".current-wind");
-                            currentWindEl.textContent += ": " + currentWind + " MPH";
+                            currentWindEl.textContent = "Wind Speed: " + currentWind + " MPH";
                             //show name of city in current weather div
                             const currentCityEl = document.querySelector(".current-city");
                             currentCityEl.textContent = inputValue;
                             //get date and add to current weather div using dayjs
                             const currentDateEl = document.querySelector(".current-date");
                             currentDateEl.textContent = dayjs().format('MM/DD/YYYY');
+
 
                             // turn temp data from kelvin to farenheit
                             let currentTempF = (currentTemp - 273.15) * 1.80 + 32;
@@ -63,6 +55,7 @@ buttonEl.addEventListener("click", function (event) {
                         });
                     }
                 });
+//_________________________________5-Day-Forecast________________________________________________
                 // use lat and lon to get 5 day forecast for noon time each day in a for loop using th4e next 5 days
                 let apiURL3 = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=bea3f88e1674867f9dbf620b29744907";
                 fetch(apiURL3).then(function (response) {
@@ -87,7 +80,7 @@ buttonEl.addEventListener("click", function (event) {
                             const day3TempEl = document.querySelector(".day3-temp");
                             day3TempEl.textContent = data.list[2].main.temp;
                             const day3HumidityEl = document.querySelector(".day3-humidity");
-                            day3HumidityEl.textContent = "Humidity: " +  data.list[2].main.humidity + "%";
+                            day3HumidityEl.textContent = "Humidity: " + data.list[2].main.humidity + "%";
                             const day4El = document.querySelector(".day4");
                             day4El.textContent = dayjs().add(4, 'day').format('MM/DD/YYYY');
                             const day4TempEl = document.querySelector(".day4-temp");
@@ -118,7 +111,7 @@ buttonEl.addEventListener("click", function (event) {
                             day3TempEl.textContent = "Temp: " + day3TempF.toFixed(2) + "°F";
                             day4TempEl.textContent = "Temp: " + day4TempF.toFixed(2) + "°F";
                             day5TempEl.textContent = "Temp: " + day5TempF.toFixed(2) + "°F";
-                            
+
                             // get icon data and add to icon divs icon-day1, icon-day2, icon-day3, icon-day4, icon-day5
                             let day1Icon = data.list[0].weather[0].icon;
                             const day1IconEl = document.querySelector(".icon-day1");
@@ -136,8 +129,10 @@ buttonEl.addEventListener("click", function (event) {
                             const day5IconEl = document.querySelector(".icon-day5");
                             day5IconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + day5Icon + ".png");
 
+
+ //____________________________________local-storage_______________________________________________________
                             //set cityName as an empty array
-                            let cityName = {inputValue};
+                            let cityName = { inputValue };
                             //set cityName to local storage from the input value
                             localStorage.setItem("cityName", JSON.stringify(cityName));
                             //get cityName from local storage and set it to list
@@ -145,14 +140,13 @@ buttonEl.addEventListener("click", function (event) {
                             const searchHistoryEl = document.querySelector(".search-history");
                             const cityListItem = document.createElement("li");
                             cityListItem.textContent = cityList.inputValue;
-                            searchHistoryEl.appendChild(cityListItem);                 
-                            
+                            searchHistoryEl.appendChild(cityListItem);
 
                         });
                     }
                 });
-                    
-                    
+
+
             });
         }
     });
