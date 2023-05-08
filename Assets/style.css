@@ -28,3 +28,17 @@ li {
     padding-bottom: .5em;
     font-weight: 700;
 }
+
+.body {
+    height: 100%;
+    padding-bottom: 2em;
+    padding-top: 2em;
+}
+
+.current-day {
+    padding-bottom: .5em;
+}
+
+
+
+
