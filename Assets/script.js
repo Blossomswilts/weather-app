@@ -15,15 +15,15 @@ function getLocal() {
     if (Array.isArray(cityList)) {
         // Add each city to the list
         cityList.forEach(function (cityName) {
-          const cityListItem = document.createElement("li");
-          cityListItem.textContent = cityName;
-          searchHistoryEl.appendChild(cityListItem);
+            const cityListItem = document.createElement("li");
+            cityListItem.textContent = cityName;
+            searchHistoryEl.appendChild(cityListItem);
         });
-      }
     }
-    
-    getLocal();
-    
+}
+
+getLocal();
+
 
 
 
@@ -32,7 +32,7 @@ function getLocal() {
 // This function will hold the fetch requests for the weather data for current and future days.
 buttonEl.addEventListener("click", function (event) {
     event.preventDefault();
-    
+
 //_________________________________Search-Results_________________________________________________
     const inputEl = document.querySelector(".form-control");
     const inputValue = inputEl.value.trim();
@@ -84,47 +84,60 @@ buttonEl.addEventListener("click", function (event) {
                     }
                 });
 //_________________________________5-Day-Forecast________________________________________________
-                // use lat and lon to get 5 day forecast for noon time each day in a for loop using the next 5 days
+                // use lat and lon to get 5 day forecast for noon time each day in a for loop using th4e next 5 days
                 let apiURL3 = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=bea3f88e1674867f9dbf620b29744907";
                 fetch(apiURL3).then(function (response) {
                     if (response.ok) {
                         response.json().then(function (data) {
                             console.log(data);
-                            for (let i = 0; i < 5; i++) {
-                                const dayEl = document.querySelector(`.day${i + 1}`);
-                                const tempEl = document.querySelector(`.day${i + 1}-temp`);
-                                const humidityEl = document.querySelector(`.day${i + 1}-humidity`);
-                                const iconEl = document.querySelector(`.icon-day${i + 1}`);
-                              
+                            const currentDate = new Date();
+                            let forecastCount = 0;
+
+                            // Loop through the forecast data and update the corresponding elements
+                            for (let i = 0; i < data.list.length; i++) {
                                 const forecast = data.list[i];
-                                const date = dayjs(currentDay).add(i + 1, 'day').format('MM/DD/YYYY');
-                                const tempF = (forecast.main.temp - 273.15) * 1.8 + 32;
-                                const humidity = forecast.main.humidity;
-                                const icon = forecast.weather[0].icon;
-                              
-                                dayEl.textContent = date;
-                                tempEl.textContent = `Temperature: ${tempF.toFixed(0)}°F`;
-                                humidityEl.textContent = `Humidity: ${humidity}%`;
-                                iconEl.setAttribute("src", `http://openweathermap.org/img/w/${icon}.png`);
-                              }
- //____________________________________local-storage___________________________________________________________
-                                //set cityName as an empty array
-                                let cityName = { inputValue };
-                                
-                                //set cityName to local storage from the input value
-                                localStorage.setItem("cityName", JSON.stringify(cityName));   
-                                getLocal();     
+                                const forecastDate = new Date(forecast.dt_txt);
+
+                                // Check if the forecast date is greater than the current date
+                                if (forecastDate.getDate() > currentDate.getDate()) {
+                                    const dayEl = document.querySelector(`.day${forecastCount + 1}`);
+                                    const tempEl = document.querySelector(`.day${forecastCount + 1}-temp`);
+                                    const humidityEl = document.querySelector(`.day${forecastCount + 1}-humidity`);
+                                    const iconEl = document.querySelector(`.icon-day${forecastCount + 1}`);
+
+                                    const date = dayjs(forecastDate).format('MM/DD/YYYY');
+                                    const tempF = (forecast.main.temp - 273.15) * 1.8 + 32;
+                                    const humidity = forecast.main.humidity;
+                                    const icon = forecast.weather[0].icon;
+
+                                    dayEl.textContent = date;
+                                    tempEl.textContent = `Temperature: ${tempF.toFixed(0)}°F`;
+                                    humidityEl.textContent = `Humidity: ${humidity}%`;
+                                    iconEl.setAttribute("src", `http://openweathermap.org/img/w/${icon}.png`);
+
+                                    forecastCount++;
+
+                                    if (forecastCount === 5) {
+                                        break;
+                                    }
+                                }
+
+
+
+                            }
                         });
                     }
                 });
+
+
+
+
             });
         }
-    });
+    })
+    //set local storage 
+    cityName = { inputValue };
+    let cityList = JSON.parse(localStorage.getItem("cityName")) || [];
+    localStorage.setItem("cityName", JSON.stringify(cityList));
+    getLocal();
 });
-
-
-
-
-//____________________________________simplified version___________________________________________________________
-
-
