@@ -12,6 +12,27 @@ buttonEl.addEventListener("click", function (event) {
     const inputEl = document.querySelector(".form-control");
     const inputValue = inputEl.value.trim();
 
+    //save search results to local storage
+    //empty array to hold search results
+    let cityName = {inputValue};
+    let savedData = localStorage.getItem("cityName");
+    // Check if any data exists in local storage
+    if (savedData) {
+      // Parse the saved data into an array
+      let dataArray = JSON.parse(savedData);
+    
+      // Add the new value to the array
+      dataArray.push(inputValue);  //this is where the error is saying it is not a function
+      
+    
+      // Store the updated array back in local storage
+      localStorage.setItem("cityName", JSON.stringify(dataArray));
+    } else {
+      // No existing data, create a new array with the current value
+      let dataArray = [inputValue];
+      localStorage.setItem("cityName", JSON.stringify(dataArray));
+    }
+
 //_________________________________Current-Weather________________________________________________
 
     let apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + inputValue + "&appid=bea3f88e1674867f9dbf620b29744907";
@@ -64,7 +85,7 @@ buttonEl.addEventListener("click", function (event) {
                     }
                 });
 //_________________________________5-Day-Forecast________________________________________________
-                // use lat and lon to get 5 day forecast for noon time each day in a for loop using th4e next 5 days
+                // use lat and lon to get 5 day forecast
                 let apiURL3 = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=bea3f88e1674867f9dbf620b29744907";
                 fetch(apiURL3).then(function (response) {
                     if (response.ok) {
@@ -84,19 +105,19 @@ buttonEl.addEventListener("click", function (event) {
                                     const tempEl = document.querySelector(`.day${forecastCount + 1}-temp`);
                                     const humidityEl = document.querySelector(`.day${forecastCount + 1}-humidity`);
                                     const iconEl = document.querySelector(`.icon-day${forecastCount + 1}`);
-
+                                    // changes kelvin to farenheit
                                     const date = dayjs(forecastDate).format('MM/DD/YYYY');
                                     const tempF = (forecast.main.temp - 273.15) * 1.8 + 32;
                                     const humidity = forecast.main.humidity;
                                     const icon = forecast.weather[0].icon;
-
+                                    //updates the elements text content and icon
                                     dayEl.textContent = date;
                                     tempEl.textContent = `Temperature: ${tempF.toFixed(0)}°F`;
                                     humidityEl.textContent = `Humidity: ${humidity}%`;
                                     iconEl.setAttribute("src", `http://openweathermap.org/img/w/${icon}.png`);
 
                                     forecastCount++;
-
+                                    // Break out of the loop if we have 5 days of forecast data
                                     if (forecastCount === 5) {
                                         break;
                                     }
