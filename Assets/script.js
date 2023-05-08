@@ -12,26 +12,10 @@ buttonEl.addEventListener("click", function (event) {
     const inputEl = document.querySelector(".form-control");
     const inputValue = inputEl.value.trim();
 
-    //save search results to local storage
-    //empty array to hold search results
+    let cityArray = JSON.parse(localStorage.getItem("cityName")) || [];
     let cityName = {inputValue};
-    let savedData = localStorage.getItem("cityName");
-    // Check if any data exists in local storage
-    if (savedData) {
-      // Parse the saved data into an array
-      let dataArray = JSON.parse(savedData);
-    
-      // Add the new value to the array
-      dataArray.push(inputValue);  //this is where the error is saying it is not a function
-      
-    
-      // Store the updated array back in local storage
-      localStorage.setItem("cityName", JSON.stringify(dataArray));
-    } else {
-      // No existing data, create a new array with the current value
-      let dataArray = [inputValue];
-      localStorage.setItem("cityName", JSON.stringify(dataArray));
-    }
+    cityArray.push(cityName); //Saying not a function. Unsure what to do here. Will ask for assistance in the matter as I cannot find solution or resources to help me.
+    localStorage.setItem("cityName", JSON.stringify(cityName)); 
 
 //_________________________________Current-Weather________________________________________________
 
