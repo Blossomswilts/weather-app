@@ -1,31 +1,6 @@
 //_________________________________Global-Variables_______________________________________________
 const buttonEl = document.querySelector(".btn");
 
-//____________________________________local-Get_______________________________________________________________
-function getLocal() {
-    //get cityName from local storage and set it to list
-    let cityList = JSON.parse(localStorage.getItem("cityName")) || [];
-    const searchHistoryEl = document.querySelector(".search-history");
-
-    //Clear previous list
-    searchHistoryEl.innerHTML = "";
-
-    //Add city to list using for each loop
-
-    if (Array.isArray(cityList)) {
-        // Add each city to the list
-        cityList.forEach(function (cityName) {
-            const cityListItem = document.createElement("li");
-            cityListItem.textContent = cityName;
-            searchHistoryEl.appendChild(cityListItem);
-        });
-    }
-}
-
-getLocal();
-
-
-
 
 
 //________________________________Event-Listener__________________________________________________
@@ -53,10 +28,12 @@ buttonEl.addEventListener("click", function (event) {
                     if (response.ok) {
                         response.json().then(function (data) {
                             console.log(data);
+
                             // pull current weather data
                             let currentTemp = data.main.temp;
                             let currentHumidity = data.main.humidity;
                             let currentWind = data.wind.speed;
+
                             //add data to current weather div
                             const currentTempEl = document.querySelector(".current-temp");
                             currentTempEl.textContent = ": " + currentTemp;
@@ -64,18 +41,21 @@ buttonEl.addEventListener("click", function (event) {
                             currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
                             const currentWindEl = document.querySelector(".current-wind");
                             currentWindEl.textContent = "Wind Speed: " + currentWind + " MPH";
+
                             //show name of city in current weather div
                             const currentCityEl = document.querySelector(".current-city");
                             currentCityEl.textContent = inputValue;
+
                             //get date and add to current weather div using dayjs
                             const currentDateEl = document.querySelector(".current-date");
                             currentDateEl.textContent = dayjs().format('MM/DD/YYYY');
 
-
                             // turn temp data from kelvin to farenheit
                             let currentTempF = (currentTemp - 273.15) * 1.80 + 32;
+
                             // add temp data to current weather div
                             currentTempEl.textContent = "Temperature: " + currentTempF.toFixed(0) + "°F";
+                            
                             // get icon data and add to icon-current div
                             let currentIcon = data.weather[0].icon;
                             const currentIconEl = document.querySelector(".icon-current");
@@ -121,23 +101,11 @@ buttonEl.addEventListener("click", function (event) {
                                         break;
                                     }
                                 }
-
-
-
                             }
                         });
                     }
                 });
-
-
-
-
             });
         }
-    })
-    //set local storage 
-    cityName = { inputValue };
-    let cityList = JSON.parse(localStorage.getItem("cityName")) || [];
-    localStorage.setItem("cityName", JSON.stringify(cityList));
-    getLocal();
+    });
 });
