@@ -1,7 +1,7 @@
 //_________________________________Global-Variables_______________________________________________
 const buttonEl = document.querySelector(".btn");
 //Call getLocal on load.
-getSearchHistory()
+getSearchHistory();
 
 
 //________________________________Event-Listener__________________________________________________
@@ -11,18 +11,17 @@ buttonEl.addEventListener("click", function (event) {
 
 //_________________________________Search-Results_________________________________________________
     const inputEl = document.querySelector(".form-control");
-    const inputValue = inputEl.value.trim();
+    const cityName = inputEl.value.trim();
 //_________________________________Local-Storage__________________________________________________
-    let cityArray = JSON.parse(localStorage.getItem("cityName")) || [];
-    let cityName = {inputValue};
+    const cityArray = JSON.parse(localStorage.getItem("cityName")) || [];
     cityArray.push(cityName); //Saying not a function. Unsure what to do here. Will ask for assistance in the matter as I cannot find solution or resources to help me.
-    localStorage.setItem("cityName", JSON.stringify(cityName)); 
+    localStorage.setItem("cityName", JSON.stringify(cityArray)); 
     //Call getLocal
-    getSearchHistory()
+    getSearchHistory();
 
 //_________________________________Current-Weather________________________________________________
 
-    let apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + inputValue + "&appid=bea3f88e1674867f9dbf620b29744907";
+    const apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=bea3f88e1674867f9dbf620b29744907";
     fetch(apiURL).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
@@ -52,7 +51,7 @@ buttonEl.addEventListener("click", function (event) {
 
                             //show name of city in current weather div
                             const currentCityEl = document.querySelector(".current-city");
-                            currentCityEl.textContent = inputValue;
+                            currentCityEl.textContent = cityName;
 
                             //get date and add to current weather div using dayjs
                             const currentDateEl = document.querySelector(".current-date");
