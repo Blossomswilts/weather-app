@@ -1,6 +1,7 @@
 //_________________________________Global-Variables_______________________________________________
 const buttonEl = document.querySelector(".btn");
-
+//Call getLocal on load.
+getSearchHistory()
 
 
 //________________________________Event-Listener__________________________________________________
@@ -11,11 +12,13 @@ buttonEl.addEventListener("click", function (event) {
 //_________________________________Search-Results_________________________________________________
     const inputEl = document.querySelector(".form-control");
     const inputValue = inputEl.value.trim();
-
+//_________________________________Local-Storage__________________________________________________
     let cityArray = JSON.parse(localStorage.getItem("cityName")) || [];
     let cityName = {inputValue};
     cityArray.push(cityName); //Saying not a function. Unsure what to do here. Will ask for assistance in the matter as I cannot find solution or resources to help me.
     localStorage.setItem("cityName", JSON.stringify(cityName)); 
+    //Call getLocal
+    getSearchHistory()
 
 //_________________________________Current-Weather________________________________________________
 
@@ -114,3 +117,18 @@ buttonEl.addEventListener("click", function (event) {
         }
     });
 });
+
+//_________________________________Search-History_________________________________________________
+//This function will get the search history from local storage and display it on the page as a list
+function getSearchHistory() {
+    let cityArray = JSON.parse(localStorage.getItem("cityName")) || [];
+    const searchHistoryEl = document.querySelector(".search-history");
+    searchHistoryEl.innerHTML = "";
+    for (let i = 0; i < cityArray.length; i++) {
+        const city = cityArray[i];
+        const cityEl = document.createElement("li");
+        cityEl.textContent = city;
+        cityEl.classList.add("list-group-item");
+        searchHistoryEl.appendChild(cityEl);
+    }
+}
