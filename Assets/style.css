@@ -40,5 +40,18 @@ li {
 }
 
 
+.history {
+    overflow-y: scroll;
+    margin-left: 11.5em;
+    margin-bottom: 5em;
+}
+
+.searchbar {
+    max-width: 20em;
+}
+
+.search-nav {
+    margin-left: 10.5em;
+}
 
 
