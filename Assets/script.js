@@ -102,7 +102,7 @@ buttonEl.addEventListener("click", function (event) {
                                     tempEl.textContent = `Temperature: ${tempF.toFixed(0)}°F`;
                                     humidityEl.textContent = `Humidity: ${humidity}%`;
                                     windEl.textContent = `Wind Speed: ${forecast.wind.speed} MPH`;
-                                    iconEl.setAttribute("src", `http://openweathermap.org/img/w/${icon}.png`);
+                                    iconEl.setAttribute("src", `https://openweathermap.org/img/w/${icon}.png`);
 
                                     forecastCount++;
                                     // Break out of the loop if we have 5 days of forecast data
