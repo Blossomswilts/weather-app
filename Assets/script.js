@@ -91,6 +91,7 @@ buttonEl.addEventListener("click", function (event) {
                                     const tempEl = document.querySelector(`.day${forecastCount + 1}-temp`);
                                     const humidityEl = document.querySelector(`.day${forecastCount + 1}-humidity`);
                                     const iconEl = document.querySelector(`.icon-day${forecastCount + 1}`);
+                                    const windEl = document.querySelector(`.day${forecastCount + 1}-wind`);
                                     // changes kelvin to farenheit
                                     const date = dayjs(forecastDate).format('MM/DD/YYYY');
                                     const tempF = (forecast.main.temp - 273.15) * 1.8 + 32;
@@ -100,6 +101,7 @@ buttonEl.addEventListener("click", function (event) {
                                     dayEl.textContent = date;
                                     tempEl.textContent = `Temperature: ${tempF.toFixed(0)}°F`;
                                     humidityEl.textContent = `Humidity: ${humidity}%`;
+                                    windEl.textContent = `Wind Speed: ${forecast.wind.speed} MPH`;
                                     iconEl.setAttribute("src", `http://openweathermap.org/img/w/${icon}.png`);
 
                                     forecastCount++;
@@ -125,7 +127,13 @@ function getSearchHistory() {
     searchHistoryEl.innerHTML = "";
     for (let i = 0; i < cityArray.length; i++) {
         const city = cityArray[i];
-        const cityEl = document.createElement("li");
+        // Create a new button element that when clicked will search for the city
+        const cityEl = document.createElement("button");
+        cityEl.addEventListener("click", function () {
+            const inputEl = document.querySelector(".form-control");
+            inputEl.value = city;
+            inputEl.dispatchEvent(new Event("change"));
+        });
         cityEl.textContent = city;
         cityEl.classList.add("list-group-item");
         searchHistoryEl.appendChild(cityEl);
