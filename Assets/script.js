@@ -21,7 +21,7 @@ buttonEl.addEventListener("click", function (event) {
 
 //_________________________________Current-Weather________________________________________________
 
-    const apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=bea3f88e1674867f9dbf620b29744907";
+    const apiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=bea3f88e1674867f9dbf620b29744907";
     fetch(apiURL).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
@@ -66,7 +66,7 @@ buttonEl.addEventListener("click", function (event) {
                             // get icon data and add to icon-current div
                             let currentIcon = data.weather[0].icon;
                             const currentIconEl = document.querySelector(".icon-current");
-                            currentIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + currentIcon + ".png");
+                            currentIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + currentIcon + ".png");
                         });
                     }
                 });
@@ -137,5 +137,10 @@ function getSearchHistory() {
         cityEl.textContent = city;
         cityEl.classList.add("list-group-item");
         searchHistoryEl.appendChild(cityEl);
+        //remove any repeated cities
+        cityArray = cityArray.filter(function (item, pos) {
+            return cityArray.indexOf(item) == pos;
+        }
+        );
     }
 }
