@@ -24,7 +24,7 @@
 
 * Ladislav Jarabek : Coding Bootcamp Instructor
 
-Link to deployed Website: 
+Link to deployed Website: https://blossomswilts.github.io/weather-app/
 mit
 
 Copyright (c) _2023_ _Michael Tranquillo
