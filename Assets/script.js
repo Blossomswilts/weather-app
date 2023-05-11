@@ -134,7 +134,9 @@ function getSearchHistory() {
             inputEl.value = city;
             inputEl.dispatchEvent(new Event("change"));
         });
-        cityEl.textContent = city;
+        // give the button the class of btn
+        cityEl.classList.add("btn");
+        cityEl.textContent = city  
         cityEl.classList.add("list-group-item");
         searchHistoryEl.appendChild(cityEl);
         //remove any repeated cities
