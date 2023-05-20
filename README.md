@@ -19,6 +19,9 @@
 * Pulling from an API to target the information you want, and append it to the HTML elements.
 * Saving results in a local storage for future use. 
 
+## Screenshot of Deployed Application
+![weather-app screenshot](https://github.com/Blossomswilts/weather-app/assets/117021869/19843496-5fa2-4ff8-9520-7b07e000721f)
+
 
 ## Resources:
 
